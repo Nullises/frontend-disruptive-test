@@ -1,13 +1,81 @@
-import React from "react";
-import { useForm } from "react-hook-form";
-import { Button, Input } from "@material-tailwind/react";
+"use client";
+import React, { useState } from "react";
+import { account, downloadFiles, ID } from "@/lib/appwrite";
 
-export default function SignIn() {
-  const { register, handleSubmit } = useForm();
+const App = () => {
+  const [loggedInUser, setLoggedInUser] = useState(null);
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [name, setName] = useState("");
 
-  const onSubmit = (data: any) => {
-    console.log(data);
-  };
+  async function login(email, password) {
+    await account.createEmailSession(email, password);
+    setLoggedInUser(await account.get());
+  }
 
-  return <div></div>;
-}
+  console.log("loggedIn", loggedInUser);
+
+  return (
+    <div>
+      <p>
+        {loggedInUser ? `Logged in as ${loggedInUser.name}` : "Not logged in"}
+      </p>
+
+      <form>
+        <input
+          type="email"
+          placeholder="Email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+        />
+        <input
+          type="password"
+          placeholder="Password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+        />
+        <input
+          type="text"
+          placeholder="Name"
+          value={name}
+          onChange={(e) => setName(e.target.value)}
+        />
+
+        <button type="button" onClick={() => login(email, password)}>
+          Login
+        </button>
+
+        <button
+          type="button"
+          onClick={async () => {
+            await account.create(ID.unique(), email, password, name);
+            login(email, password);
+          }}
+        >
+          Register
+        </button>
+
+        <button
+          type="button"
+          onClick={async () => {
+            await account.deleteSession("current");
+            setLoggedInUser(null);
+          }}
+        >
+          Logout
+        </button>
+
+        <button
+          type="button"
+          onClick={async () => {
+            downloadFiles("imagen123");
+          }}
+        >
+          DOWNLOAD FILES
+        </button>
+      </form>
+    </div>
+  );
+};
+
+export default App;

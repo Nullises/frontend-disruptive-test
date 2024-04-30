@@ -10,8 +10,12 @@
   },
   "dependencies": {
     "@emotion/react": "^11.11.4",
+    "@fontsource-variable/league-spartan": "^5.0.20",
+    "@fontsource-variable/quicksand": "^5.0.18",
     "@material-tailwind/html": "^2.2.2",
     "@material-tailwind/react": "^2.1.9",
+    "@next/env": "^14.2.3",
+    "appwrite": "^13.0.2",
     "next": "14.2.3",
     "react": "^18",
     "react-dom": "^18",

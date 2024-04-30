@@ -7,11 +7,21 @@ module.exports = withMT({
     "./app/**/*.{js,ts,jsx,tsx,mdx}",
   ],
   theme: {
-    extend: {
-      backgroundImage: {
-        "gradient-radial": "radial-gradient(var(--tw-gradient-stops))",
-        "gradient-conic":
-          "conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))",
+    colors: {
+      primary: {
+        100: "#599db2",
+        200: "#2b6579",
+        300: "#183749",
+      },
+      secondary: {
+        100: "#da9190",
+      },
+      gray: {
+        100: "#c9ccd1",
+        200: "#6e7c84",
+      },
+      white: {
+        100: "#fcfafb",
       },
     },
   },
