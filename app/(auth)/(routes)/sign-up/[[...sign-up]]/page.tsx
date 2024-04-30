@@ -1,13 +1,34 @@
-import React from "react";
-import { useForm } from "react-hook-form";
-import { Button, Input } from "@material-tailwind/react";
+"use client";
+import React, { useState } from "react";
+import { useRouter } from "next/navigation";
+import { createUser, signIn } from "@/lib/appwrite";
+import { SignupCard } from "@/app/components/signupCard";
 
-export default function Signup() {
-  const { register, handleSubmit } = useForm();
+const SignIn = () => {
+  const router = useRouter();
+  const [form, setForm] = useState({
+    email: "",
+    username: "",
+    password: "",
+  });
 
-  const onSubmit = (data: any) => {
-    console.log(data);
-  };
+  async function signup(form: any) {
+    const isRegistered = await createUser(
+      form.email,
+      form.password,
+      form.username
+    );
+    console.log("isRegistered", isRegistered);
+    if (isRegistered) {
+      router.push("/dashboard");
+    }
+  }
 
-  return <div></div>;
-}
+  return (
+    <div>
+      <SignupCard signup={signup} form={form} setForm={setForm} />
+    </div>
+  );
+};
+
+export default SignIn;

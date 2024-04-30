@@ -1,4 +1,4 @@
-const withMT = require("@material-tailwind/html/utils/withMT");
+const withMT = require("@material-tailwind/react/utils/withMT");
 
 module.exports = withMT({
   content: [
@@ -7,6 +7,12 @@ module.exports = withMT({
     "./app/**/*.{js,ts,jsx,tsx,mdx}",
   ],
   theme: {
+    screens: {
+      sm: "480px",
+      md: "768px",
+      lg: "976px",
+      xl: "1440px",
+    },
     colors: {
       primary: {
         100: "#599db2",

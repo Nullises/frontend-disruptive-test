@@ -1,81 +1,32 @@
 "use client";
 import React, { useState } from "react";
-import { account, downloadFiles, ID } from "@/lib/appwrite";
+import { LoginCard } from "@/app/components/loginCard";
+import { useRouter } from "next/navigation";
+import { signIn, account } from "@/lib/appwrite";
+import { useGlobalContext } from "@/context/GlobalProvider";
 
-const App = () => {
-  const [loggedInUser, setLoggedInUser] = useState(null);
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [name, setName] = useState("");
+const SignIn = () => {
+  const { setIsLogged, setUser } = useGlobalContext();
+  const router = useRouter();
+  const [form, setForm] = useState({
+    email: "",
+    password: "",
+  });
 
-  async function login(email, password) {
-    await account.createEmailSession(email, password);
-    setLoggedInUser(await account.get());
+  async function login(form: any) {
+    const isSigned = await signIn(form.email, form.password);
+    if (isSigned) {
+      setIsLogged(true);
+      setUser(isSigned);
+      router.push("/dashboard");
+    }
   }
-
-  console.log("loggedIn", loggedInUser);
 
   return (
     <div>
-      <p>
-        {loggedInUser ? `Logged in as ${loggedInUser.name}` : "Not logged in"}
-      </p>
-
-      <form>
-        <input
-          type="email"
-          placeholder="Email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-        />
-        <input
-          type="password"
-          placeholder="Password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-        />
-        <input
-          type="text"
-          placeholder="Name"
-          value={name}
-          onChange={(e) => setName(e.target.value)}
-        />
-
-        <button type="button" onClick={() => login(email, password)}>
-          Login
-        </button>
-
-        <button
-          type="button"
-          onClick={async () => {
-            await account.create(ID.unique(), email, password, name);
-            login(email, password);
-          }}
-        >
-          Register
-        </button>
-
-        <button
-          type="button"
-          onClick={async () => {
-            await account.deleteSession("current");
-            setLoggedInUser(null);
-          }}
-        >
-          Logout
-        </button>
-
-        <button
-          type="button"
-          onClick={async () => {
-            downloadFiles("imagen123");
-          }}
-        >
-          DOWNLOAD FILES
-        </button>
-      </form>
+      <LoginCard login={login} form={form} setForm={setForm} />
     </div>
   );
 };
 
-export default App;
+export default SignIn;

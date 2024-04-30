@@ -1,6 +1,9 @@
 import type { Metadata } from "next";
 import { League_Spartan, Quicksand } from "next/font/google";
 import "./globals.css";
+import Footer from "./components/common/footer";
+import LayoutProvider from "./provider";
+import GlobalProvider from "@/context/GlobalProvider";
 
 export const leagueSpartan = League_Spartan({ subsets: ["latin"] });
 export const quicksand = Quicksand({ subsets: ["latin"] }) as any;
@@ -34,7 +37,16 @@ export default function RootLayout({
       <head>
         <link rel="icon" href="/favicon.ico" sizes="any" />
       </head>
-      <body className={quicksand.className}>{children}</body>
+      <body className={quicksand.className}>
+        <main>
+          <GlobalProvider>
+            <LayoutProvider>{children}</LayoutProvider>
+          </GlobalProvider>
+        </main>
+        <div className="flex justify-center">
+          <Footer></Footer>
+        </div>
+      </body>
     </html>
   );
 }
